@@ -8,4 +8,6 @@ public class Constants {
     public static double teleF = 0;
 
     public static double maxMotorAngularVelocity = 10;
+    public static double clawServoMinAngle = 0;
+    public static double clawServoMaxAngle = 90;
 }

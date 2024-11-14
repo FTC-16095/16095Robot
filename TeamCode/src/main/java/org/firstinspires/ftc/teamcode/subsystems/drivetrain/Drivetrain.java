@@ -40,8 +40,8 @@ public class Drivetrain {
         this.vision = vision;
 
         rightBack = hardwareMap.get(DcMotorEx.class, "RB");
-        rightFront=hardwareMap.get(DcMotorEx.class,"RF");
-        leftFront=hardwareMap.get(DcMotorEx.class,"LF");
+        rightFront = hardwareMap.get(DcMotorEx.class,"RF");
+        leftFront = hardwareMap.get(DcMotorEx.class,"LF");
         leftBack = hardwareMap.get(DcMotorEx.class, "LB");
 //        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 //        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
