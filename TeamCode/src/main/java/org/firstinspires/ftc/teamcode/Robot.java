@@ -26,10 +26,9 @@ public class Robot {
     public Robot(HardwareMap hardwareMap, Vision vision) {
         this.vision = vision;
 
-        elevator = new Elevator();
         claw = new Claw(hardwareMap, this);
         sensors = new Sensors();
-
+        elevator = new Elevator(this, sensors, hardwareMap, vision);
         drivetrain = new Drivetrain(hardwareMap, this, sensors, vision);
 
         Dashboard.setup();
