@@ -10,4 +10,6 @@ public class Constants {
     public static double maxMotorAngularVelocity = 10;
     public static double clawServoMinAngle = 0;
     public static double clawServoMaxAngle = 90;
+    public static double stretchP = 0.02;
+
 }
