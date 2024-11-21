@@ -16,4 +16,6 @@ public class Constants {
     // Elevator PID
     public static double elevatorP = 0.05;
 
+    public static double angleServoMaxAngle = 90;
+    public static double angleServoMinAngle = 0;
 }

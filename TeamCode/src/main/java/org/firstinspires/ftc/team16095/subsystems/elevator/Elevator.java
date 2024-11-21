@@ -11,19 +11,22 @@ import org.firstinspires.ftc.team16095.vision.Vision;
 
 public class Elevator {
     public enum State {
+        IDLE,
         TOP,
         BOTTOM,
         ELEVATING,
         REPOSITIONING
     }
 
+    private State currentState = State.IDLE;
+
     private Robot robot;
     private Sensors sensors;
     private HardwareMap hardwareMap;
     private Vision vision;
 
-    private final Motor leftMotor;
-    private final Motor rightMotor;
+    private final Motor leftLiftMotor;
+    private final Motor rightLiftMotor;
 
     private Motor.Encoder encoder;
 
@@ -38,24 +41,26 @@ public class Elevator {
         this.hardwareMap = hardwareMap;
         this.vision = vision;
 
-        leftMotor = new Motor(hardwareMap, "elevator_left", Motor.GoBILDA.RPM_312);
-        rightMotor = new Motor(hardwareMap, "elevator_right", Motor.GoBILDA.RPM_312);
+        leftLiftMotor = new Motor(hardwareMap, "leftLiftMotor", Motor.GoBILDA.RPM_312);
+        rightLiftMotor = new Motor(hardwareMap, "rightLiftMotor", Motor.GoBILDA.RPM_312);
 
-        rightMotor.setInverted(true);
+        rightLiftMotor.setInverted(true);
 
-        motors = new MotorGroup(leftMotor, rightMotor);
+        motors = new MotorGroup(leftLiftMotor, rightLiftMotor);
         motors.setRunMode(Motor.RunMode.PositionControl);
-        motors.setPositionCoefficient(Constants.elevatorP);
+
+        setElevatorPositionCoefficient(Constants.elevatorP);
 
         motors.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
-        encoder = leftMotor.encoder;
+        encoder = leftLiftMotor.encoder;
         encoder.setDistancePerPulse(18.0);
 
-        motors.resetEncoder();
+        motors.stopAndResetEncoder();
         encoder.reset();
         encoder.setDirection(Motor.Direction.FORWARD);
         motors.set(0);
+
     }
 
     public void setElevatorPositionCoefficient(double kP) {

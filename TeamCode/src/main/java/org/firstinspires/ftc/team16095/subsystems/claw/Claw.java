@@ -15,88 +15,128 @@ import org.firstinspires.ftc.team16095.vision.Vision;
 
 public class Claw {
     public enum State {
+        IDLE,
         CAUGHT,
         CATCHING,
-        RELEASE,
-        RELEASING,
-        ERR
+        STRETCHING,
+        RESET,
+        RELEASED,
+        RELEASING
     }
 
-    private State state;
+    private State clawState = State.IDLE;
+    private State stretchState = State.IDLE;
+
     private Robot robot;
     private Sensors sensors;
     private Vision vision;
     private HardwareMap hardwareMap;
 
-    private Motor stretchMotor;
+    private Motor slideMotor;
     private Motor.Encoder encoder;
 
     private ServoEx clawServo;
+    private ServoEx clawTurnServo;
 
     public Claw(HardwareMap hardwareMap, Robot robot) {
         this.robot = robot;
         this.hardwareMap = hardwareMap;
 
-        stretchMotor = new Motor(hardwareMap, "stretchMotor", Motor.GoBILDA.RPM_312);
-        stretchMotor.setRunMode(Motor.RunMode.PositionControl);
-        stretchMotor.setPositionCoefficient(Constants.stretchP);
+        slideMotor = new Motor(hardwareMap, "slideMotor", Motor.GoBILDA.RPM_312);
 
-        stretchMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        slideMotor.setRunMode(Motor.RunMode.PositionControl);
+        slideMotor.setPositionCoefficient(Constants.stretchP);
 
-        encoder = stretchMotor.encoder;
-        stretchMotor.resetEncoder();
+        slideMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+
+        encoder = slideMotor.encoder;
+        slideMotor.stopAndResetEncoder();
         encoder.setDistancePerPulse(18.0);
 
         clawServo = new SimpleServo(
                 hardwareMap, "clawServo", Constants.clawServoMinAngle, Constants.clawServoMaxAngle, AngleUnit.DEGREES
         );
-        clawServo.setPosition(0);
+
+        clawTurnServo = new SimpleServo(
+                hardwareMap, "clawTurnServo", Constants.angleServoMinAngle, Constants.angleServoMaxAngle, AngleUnit.DEGREES
+        );
+
+//        clawServo.setPosition(0);
 
         telemetry.addData("Claw Servo Position", clawServo.getPosition());
+        telemetry.addData("Angle Servo Position", clawTurnServo.getPosition());
+
+        telemetry.addData("Angle Servo Angle(Degrees)", clawTurnServo.getAngle(AngleUnit.DEGREES));
         telemetry.addData("Claw Servo Angle(Degrees)", clawServo.getAngle(AngleUnit.DEGREES));
 
     }
 
-    private void setStretchDirection(boolean isForward) {
-        stretchMotor.setInverted(!isForward);
+    public void setStretchDirection(boolean isForward) {
+        slideMotor.setInverted(!isForward);
     }
 
-    private void setClawDirection(boolean isForward) {
+    public void setClawDirection(boolean isForward) {
         clawServo.setInverted(!isForward);
     }
 
-    private void catchObject(int stretchPosition) {
+    public void catchObject(int stretchPosition) {
         clawStretch(stretchPosition);
         clawCatch();
     }
 
-    private double getStretchPosition() {
-        return stretchMotor.getCurrentPosition();
+    public double getStretchPosition() {
+        return slideMotor.getCurrentPosition();
     }
 
-    private double getStretchVelocity() {
-        return stretchMotor.getCorrectedVelocity();
+    public double getStretchVelocity() {
+        return slideMotor.getCorrectedVelocity();
     }
 
-    private void clawStretch(int positionTicks) {
-        stretchMotor.setTargetPosition(positionTicks);
+    public void clawStretch(int positionTicks) {
+        slideMotor.setTargetPosition(positionTicks);
 
-        stretchMotor.setPositionTolerance(13.6);   // allowed maximum error
+        slideMotor.setPositionTolerance(13.6);   // allowed maximum error
 
-        while (!stretchMotor.atTargetPosition()) {
-            stretchMotor.set(0.75);
+        while (!slideMotor.atTargetPosition()) {
+            slideMotor.set(0.75);
         }
-        stretchMotor.stopMotor();
+        slideMotor.stopMotor();
     }
 
     private void clawCatch() {
-        clawServo.turnToAngle(90);
+        clawServo.rotateByAngle(90, AngleUnit.DEGREES);
         // to be added: if sensors detected
-        clawServo.turnToAngle(0);
+
+//        clawServo.setPosition(1);
+        clawServo.rotateByAngle(-90, AngleUnit.DEGREES);
     }
 
-    private boolean testEncoder() {
-        return encoder.getPosition() == stretchMotor.getCurrentPosition();
+    public void clawRelease() {
+        if (clawState == State.CAUGHT){
+            clawServo.rotateByAngle(90, AngleUnit.DEGREES);
+            clawServo.rotateByAngle(-90, AngleUnit.DEGREES);
+            clawState = State.RELEASED;
+        }
+//        else {
+//
+//        }
+
+    }
+
+    public void clawRotate(double angle) {
+        clawTurnServo.rotateByAngle(angle, AngleUnit.DEGREES);
+    }
+
+    public void clawTwist() {
+        slideMotor.setTargetPosition(slideMotor.getCurrentPosition() + 1);
+        slideMotor.setTargetPosition(slideMotor.getCurrentPosition() - 1);
+        slideMotor.setTargetPosition(slideMotor.getCurrentPosition() + 1);
+        slideMotor.setTargetPosition(slideMotor.getCurrentPosition() - 1);
+
+    }
+
+    public boolean encoderTest() {
+        return encoder.getPosition() == slideMotor.getCurrentPosition();
     }
 
 }

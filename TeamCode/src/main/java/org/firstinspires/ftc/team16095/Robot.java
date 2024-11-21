@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.team16095;
 
-import static org.firstinspires.ftc.team16095.utils.Globals.GET_LOOP_TIME;
+import static org.firstinspires.ftc.team16095.utils16095.Globals.GET_LOOP_TIME;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,7 +8,7 @@ import org.firstinspires.ftc.team16095.sensors.Sensors;
 import org.firstinspires.ftc.team16095.subsystems.claw.Claw;
 import org.firstinspires.ftc.team16095.subsystems.drivetrain.Drivetrain;
 import org.firstinspires.ftc.team16095.subsystems.elevator.Elevator;
-import org.firstinspires.ftc.team16095.utils.Dashboard;
+import org.firstinspires.ftc.team16095.utils16095.Dashboard;
 import org.firstinspires.ftc.team16095.vision.Vision;
 
 public class Robot {

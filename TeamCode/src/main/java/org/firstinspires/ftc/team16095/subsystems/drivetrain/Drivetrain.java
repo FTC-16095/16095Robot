@@ -14,6 +14,8 @@ import org.firstinspires.ftc.team16095.vision.Vision;
 
 public class Drivetrain {
 
+    public State state;
+
     public enum State {
         FOLLOW_SPLINE,
         GO_TO_POINT,
@@ -28,10 +30,10 @@ public class Drivetrain {
     private Sensors sensors;
     private HardwareMap hardwareMap;
     private Vision vision;
-    private final DcMotorEx rightBack;
-    private final DcMotorEx rightFront;
-    private final DcMotorEx leftFront;
-    private final DcMotorEx leftBack;
+    private final DcMotorEx rightBackMotor;
+    private final DcMotorEx rightFrontMotor;
+    private final DcMotorEx leftFrontMotor;
+    private final DcMotorEx leftBackMotor;
 
     public Drivetrain(HardwareMap hardwareMap, Robot robot, Sensors sensors, Vision vision) {
         this.robot = robot;
@@ -39,19 +41,19 @@ public class Drivetrain {
         this.hardwareMap = hardwareMap;
         this.vision = vision;
 
-        rightBack = hardwareMap.get(DcMotorEx.class, "RB");
-        rightFront = hardwareMap.get(DcMotorEx.class,"RF");
-        leftFront = hardwareMap.get(DcMotorEx.class,"LF");
-        leftBack = hardwareMap.get(DcMotorEx.class, "LB");
+        rightBackMotor = hardwareMap.get(DcMotorEx.class, "rightBackMotor");
+        rightFrontMotor = hardwareMap.get(DcMotorEx.class,"rightFrontMotor");
+        leftFrontMotor = hardwareMap.get(DcMotorEx.class,"leftFrontMotor");
+        leftBackMotor = hardwareMap.get(DcMotorEx.class, "leftBackMotor");
 //        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 //        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void setPower(double LBP, double LFP,double RBP,double RFP) {
-        rightBack.setPower(Range.clip(RBP,-1,1));
-        rightFront.setPower(Range.clip(RFP,-1,1));
-        leftFront.setPower(Range.clip(LFP,-1,1));
-        leftBack.setPower(Range.clip(LBP,-1,1));
+        rightBackMotor.setPower(Range.clip(RBP,-1,1));
+        rightFrontMotor.setPower(Range.clip(RFP,-1,1));
+        leftFrontMotor.setPower(Range.clip(LFP,-1,1));
+        leftBackMotor.setPower(Range.clip(LBP,-1,1));
     }
 
     public void setPowerWithGamepad(double leftY, double leftX,double RightY, double RightX) {
@@ -62,17 +64,17 @@ public class Drivetrain {
     }
 
     public void enablePIDFControl(PIDFCoefficients pidfCoef) {
-        rightBack.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
-        rightFront.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
-        leftBack.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
-        leftFront.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
+        rightBackMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
+        rightFrontMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
+        leftBackMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
+        leftFrontMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
     }
 
     public void setVelocity(double LBV, double LFV,double RBV,double RFV) {
-        rightBack.setVelocity(Range.clip(RBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
-        rightFront.setVelocity(Range.clip(RFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
-        leftFront.setVelocity(Range.clip(LFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
-        leftBack.setVelocity(Range.clip(LBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        rightBackMotor.setVelocity(Range.clip(RBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        rightFrontMotor.setVelocity(Range.clip(RFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        leftFrontMotor.setVelocity(Range.clip(LFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        leftBackMotor.setVelocity(Range.clip(LBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
     }
 
     public void setVelocityWithGamepad(double leftY, double leftX,double RightY, double RightX) {
@@ -86,24 +88,24 @@ public class Drivetrain {
      * Call this function to set BRAKE state when no power for EVERY motor in MECANUM Drivetrain.
      */
     public void setZeroPowerBrake() {
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBackMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void setRobotDirection(boolean isHeadingFront) {
         if (isHeadingFront) {
-            leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-            leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-            rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-            rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
+            leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightFrontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+            rightBackMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         }
         else {
-            rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-            rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-            leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
-            leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+            rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftBackMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+            leftBackMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         }
     }
 
