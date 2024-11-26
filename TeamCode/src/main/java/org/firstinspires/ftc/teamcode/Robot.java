@@ -13,22 +13,22 @@ import org.firstinspires.ftc.teamcode.vision.Vision;
 
 public class Robot {
 
-    public final Drivetrain drivetrain;
+//    public final Drivetrain drivetrain;
     public final Sensors sensors;
 
     public HardwareMap hardwareMap;
     //public final Deposit deposit;
     public final Vision vision;
     public final Elevator elevator;
-//    public final Claw claw;
+    public final Claw claw;
 
     public Robot(HardwareMap hardwareMap, Vision vision) {
         this.vision = vision;
 
-//        claw = new Claw(hardwareMap, this);
+        claw = new Claw(hardwareMap, this);
         sensors = new Sensors();
         elevator = new Elevator(this, sensors, hardwareMap, vision);
-        drivetrain = new Drivetrain(hardwareMap, this, sensors, vision);
+//        drivetrain = new Drivetrain(hardwareMap, this, sensors, vision);
 
         Dashboard.setup();
     }

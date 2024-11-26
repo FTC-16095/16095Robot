@@ -33,7 +33,7 @@ public class Elevator {
     private final MotorGroup motors;
 
     private static final double DEFAULT_POSITION_TOLERANCE = 13.6;
-    private static final double DEFAULT_POWER = 0.75;
+    private static final double DEFAULT_POWER = 999;
 
     public Elevator(Robot robot, Sensors sensors, HardwareMap hardwareMap, Vision vision) {
         this.robot = robot;
@@ -44,7 +44,7 @@ public class Elevator {
         leftLiftMotor = new Motor(hardwareMap, "leftLiftMotor", Motor.GoBILDA.RPM_312);
         rightLiftMotor = new Motor(hardwareMap, "rightLiftMotor", Motor.GoBILDA.RPM_312);
 
-        rightLiftMotor.setInverted(true);
+        leftLiftMotor.setInverted(false);
 
         motors = new MotorGroup(leftLiftMotor, rightLiftMotor);
         motors.setRunMode(Motor.RunMode.PositionControl);
@@ -85,7 +85,7 @@ public class Elevator {
             motors.set(DEFAULT_POWER);
         }
 
-        motors.stopMotor();
+        //motors.stopMotor();
     }
 
 }

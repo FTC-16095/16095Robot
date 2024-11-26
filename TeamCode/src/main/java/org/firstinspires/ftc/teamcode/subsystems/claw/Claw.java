@@ -63,12 +63,6 @@ public class Claw {
 
 //        clawServo.setPosition(0);
 
-        telemetry.addData("Claw Servo Position", clawServo.getPosition());
-        telemetry.addData("Angle Servo Position", clawTurnServo.getPosition());
-
-        telemetry.addData("Angle Servo Angle(Degrees)", clawTurnServo.getAngle(AngleUnit.DEGREES));
-        telemetry.addData("Claw Servo Angle(Degrees)", clawServo.getAngle(AngleUnit.DEGREES));
-
     }
 
     public void setStretchDirection(boolean isForward) {

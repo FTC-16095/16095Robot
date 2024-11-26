@@ -56,20 +56,6 @@ public class Drivetrain {
         leftBackMotor.setPower(Range.clip(LBP, -1, 1));
     }
 
-    public void setPowerWithGamepad(double leftY, double leftX, double rightX) {
-
-        double forward = -leftY;
-        double strafe = leftX;
-        double rotate = rightX;
-
-        double leftFrontPower = forward + strafe + rotate;
-        double leftBackPower = forward - strafe + rotate;
-        double rightFrontPower = forward - strafe - rotate;
-        double rightBackPower = forward + strafe - rotate;
-
-        // 设置电机功率
-        setPower(leftBackPower, leftFrontPower, rightBackPower, rightFrontPower);
-    }
 
     public void enablePIDFControl(PIDFCoefficients pidfCoef) {
         rightBackMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoef);
