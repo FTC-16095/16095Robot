@@ -17,7 +17,7 @@ public class TeleOp extends LinearOpMode {
     Robot robot;
     Sensors sensors = new Sensors();
     private int stretchPosition = 20;
-    private int targetPosition = 20;
+    private int targetPosition = 200;
     private int rotate = 0;
 
     // Grab Constants and give them to drivetrain
@@ -49,9 +49,9 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            // or set power, depend on operator
-            robot.drivetrain.setVelocityWithGamepad(
-                    gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_y, gamepad1.right_stick_x);
+            // or set velocity, depend on operator
+            robot.drivetrain.setPowerWithGamepad(
+                    gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
             // elevate
             if (aPressed.get()) {
@@ -60,7 +60,7 @@ public class TeleOp extends LinearOpMode {
 
             // stretch, catch
             if (bPressed.get()) {
-                robot.claw.catchObject(stretchPosition);
+//                robot.claw.catchObject(stretchPosition);
             }
 
 //            if (sensors.someSensor.detected()) {
@@ -68,7 +68,7 @@ public class TeleOp extends LinearOpMode {
 //            }
 
             if (xPressed.get()) {
-                robot.claw.clawRelease();
+//                robot.claw.clawRelease();
             }
 
 //            if (sensors.someSensor.detected()) {
@@ -87,7 +87,7 @@ public class TeleOp extends LinearOpMode {
                 rotate = -1;
             }
 
-            robot.claw.clawRotate(2 * rotate);
+//            robot.claw.clawRotate(2 * rotate);
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
