@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,6 +10,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.elevator.Elevator;
 import org.firstinspires.ftc.teamcode.utils16095.Globals;
@@ -20,6 +21,9 @@ import org.firstinspires.ftc.teamcode.utils16095.RunMode;
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
     Robot robot;
+
+    private double yawOffset;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -35,6 +39,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
         Trigger isAPressed = new Trigger(() -> gamepad1.a);
         Trigger isBPressed = new Trigger(() -> gamepad1.b);
+        Trigger isXPressed = new Trigger(() -> gamepad1.x);
+        Trigger isYPressed = new Trigger(() -> gamepad1.y);
+
+        Trigger isLeftBumperPressed = new Trigger(() -> gamepad1.left_bumper);
+        Trigger isRightBumperPressed = new Trigger(() -> gamepad1.right_bumper);
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -54,15 +63,27 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            telemetry.update();
+            telemetry.addData("Elevator Position", robot.elevator.getPos());
+            telemetry.addData("Stretch Position", robot.claw.getStretchPosition());
+
             if (isAPressed.get()) {
-                robot.elevator.toTargetPosition(200,10000);
+                robot.elevator.toTargetPosition(20,5000);
+                // to be determined
             }
 
             if (isBPressed.get()) {
-                robot.claw.catchObject(100);
+                robot.claw.catchObject(10);
+                // to be determined
             }
 
-            double yawOffset = 0;
+            if (isXPressed.get()) {
+                robot.elevator.toTargetPosition(0,5000);
+            }
+
+            if (isYPressed.get()) {
+                robot.claw.clawRelease();
+            }
 
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x;
@@ -72,7 +93,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
             // The equivalent button is start on Xbox-style controllers.
-            if (gamepad1.b) {
+            if (gamepad1.dpad_left) {
                 yawOffset = odo.getHeading() - yawOffset;
             }
 

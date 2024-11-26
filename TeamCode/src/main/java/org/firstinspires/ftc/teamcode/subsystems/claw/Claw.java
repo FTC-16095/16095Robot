@@ -74,6 +74,7 @@ public class Claw {
     }
 
     public void catchObject(int stretchPosition) {
+        clawRelease();
         clawStretch(stretchPosition);
         clawCatch();
     }
@@ -87,8 +88,8 @@ public class Claw {
     }
 
     public void clawStretch(int positionTicks) {
-        slideMotor.setTargetPosition(positionTicks);
 
+        slideMotor.setTargetPosition(positionTicks);
         slideMotor.setPositionTolerance(13.6);   // allowed maximum error
 
         while (!slideMotor.atTargetPosition()) {
