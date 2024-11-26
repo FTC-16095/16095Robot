@@ -49,18 +49,26 @@ public class Drivetrain {
 //        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void setPower(double LBP, double LFP,double RBP,double RFP) {
-        rightBackMotor.setPower(Range.clip(RBP,-1,1));
-        rightFrontMotor.setPower(Range.clip(RFP,-1,1));
-        leftFrontMotor.setPower(Range.clip(LFP,-1,1));
-        leftBackMotor.setPower(Range.clip(LBP,-1,1));
+    public void setPower(double LBP, double LFP, double RBP, double RFP) {
+        rightBackMotor.setPower(Range.clip(RBP, -1, 1));
+        rightFrontMotor.setPower(Range.clip(RFP, -1, 1));
+        leftFrontMotor.setPower(Range.clip(LFP, -1, 1));
+        leftBackMotor.setPower(Range.clip(LBP, -1, 1));
     }
 
-    public void setPowerWithGamepad(double leftY, double leftX,double RightY, double RightX) {
-        setPower(- leftY - leftX + RightX,
-                - leftY + leftX + RightX,
-                - leftY + leftX - RightX,
-                - leftY - leftX - RightX);
+    public void setPowerWithGamepad(double leftY, double leftX, double rightX) {
+
+        double forward = -leftY;
+        double strafe = leftX;
+        double rotate = rightX;
+
+        double leftFrontPower = forward + strafe + rotate;
+        double leftBackPower = forward - strafe + rotate;
+        double rightFrontPower = forward - strafe - rotate;
+        double rightBackPower = forward + strafe - rotate;
+
+        // 设置电机功率
+        setPower(leftBackPower, leftFrontPower, rightBackPower, rightFrontPower);
     }
 
     public void enablePIDFControl(PIDFCoefficients pidfCoef) {
@@ -71,10 +79,10 @@ public class Drivetrain {
     }
 
     public void setVelocity(double LBV, double LFV,double RBV,double RFV) {
-        rightBackMotor.setVelocity(Range.clip(RBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
-        rightFrontMotor.setVelocity(Range.clip(RFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
-        leftFrontMotor.setVelocity(Range.clip(LFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
-        leftBackMotor.setVelocity(Range.clip(LBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        rightBackMotor.setVelocity(100*Range.clip(RBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        rightFrontMotor.setVelocity(100*Range.clip(RFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        leftFrontMotor.setVelocity(100*Range.clip(LFV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
+        leftBackMotor.setVelocity(100*Range.clip(LBV, -Constants.maxMotorAngularVelocity, Constants.maxMotorAngularVelocity));
     }
 
     public void setVelocityWithGamepad(double leftY, double leftX,double RightY, double RightX) {
