@@ -12,11 +12,11 @@ public class MecanumDrive extends SubsystemBase {
     private final GoBildaPinpointDriver od;
     private double yawOffset;
 
-    public MecanumDrive(final HardwareMap hardwareMap) {
-        leftFrontMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
-        leftBackMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-        rightFrontMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
-        rightBackMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
+    public MecanumDrive(HardwareMap hardwareMap) {
+        leftFrontMotor = hardwareMap.get(DcMotor.class, "leftFrontMotor");
+        leftBackMotor = hardwareMap.get(DcMotor.class, "leftBackMotor");
+        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+        rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
         od = hardwareMap.get(GoBildaPinpointDriver.class, "od");
 
         leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

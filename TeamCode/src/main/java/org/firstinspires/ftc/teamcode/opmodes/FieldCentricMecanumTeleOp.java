@@ -24,8 +24,6 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        gamepadEx1 = new GamepadEx(gamepad1);
-
         robot = new Robot(hardwareMap, null);
 
         // DRIVER 1
@@ -63,56 +61,35 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            telemetry.addData("Elevator Position", robot.elevator.getPos());
-            telemetry.addData("Stretch Position", robot.claw.getStretchPosition());
-
             if (a_1.isClicked(gamepad1.a)) {
-                if (Elevator.elevatorState == Elevator.State.IDLE) {
-                    robot.elevator.toTargetPosition(20, 5000);
-                }
-                else if (Elevator.elevatorState == Elevator.State.TOP) {
-                    robot.elevator.toTargetPosition(0,5000);
-                }
-                else {
-                    continue;
-                }
-                // to be determined
+                robot.elevator.toTargetPosition(5000, 5000);
             }
 
             if (b_1.isClicked(gamepad1.b)) {
-                if (Claw.clawState == Claw.State.IDLE && Claw.stretchState == Claw.State.IDLE) {
-                    robot.claw.catchObject(10);
-                }
-                else if (Claw.clawState == Claw.State.CAUGHT && Claw.stretchState == Claw.State.CAUGHT) {
-                    robot.claw.clawRepositioning();
-                }
-                else {
-                    continue;
-                }
-                // to be determined
+                robot.claw.catchObject(10);
             }
 
-            if (leftBumper_1.isClicked(gamepad1.left_bumper) && rightBumper_1.isReleased(gamepad1.right_bumper)) {
-                robot.claw.clawRotate(10);
+            if (leftBumper_1.isClicked(gamepad1.left_bumper)) {
+                robot.claw.clawRotate(-10);
             }
 
-            if (leftBumper_1.isReleased(gamepad1.left_bumper) && rightBumper_1.isClicked(gamepad1.right_bumper)) {
+            if (rightBumper_1.isClicked(gamepad1.right_bumper)) {
                 robot.claw.clawRotate(10);
             }
 
             if (x_1.isClicked(gamepad1.x)) {
-                robot.claw.clawTwist();
+                robot.elevator.toTargetPosition(0,5000);
             }
 
             if (y_1.isClicked(gamepad1.y)) {
-
+                robot.claw.clawRepositioning();
             }
 
             robot.drivetrain.setDefaultCommand(
                     new TeleopDriveCommand(
-                            robot.drivetrain, () -> -gamepadEx1.getLeftY(),
-                    () -> -gamepadEx1.getLeftX(), () -> gamepadEx1.getRightX(),
-                    () -> gamepadEx1.getButton(GamepadKeys.Button.LEFT_STICK_BUTTON)
+                            robot.drivetrain, () -> -gamepad1.left_stick_y,
+                    () -> -gamepad1.left_stick_x, () -> gamepad1.right_stick_x,
+                    () -> gamepad1.left_stick_button
                     )
             );
 

@@ -56,9 +56,9 @@ public class Elevator {
         encoder.setDistancePerPulse(18.0);
 
         motors.stopAndResetEncoder();
+
         encoder.reset();
         encoder.setDirection(Motor.Direction.FORWARD);
-        motors.set(0);
 
         elevatorState = State.IDLE;
 
@@ -69,7 +69,7 @@ public class Elevator {
     }
 
     public int getPos() {
-        return motors.getCurrentPosition();
+        return encoder.getPosition();
     }
 
     public void update() {
