@@ -50,8 +50,8 @@ public class Claw {
         slideMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
         encoder = slideMotor.encoder;
-        slideMotor.stopAndResetEncoder();
         encoder.setDistancePerPulse(18.0);
+        encoder.reset();
 
         clawServo = new SimpleServo(
                 hardwareMap, "clawServo", Constants.clawServoMinAngle, Constants.clawServoMaxAngle, AngleUnit.DEGREES

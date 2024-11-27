@@ -86,11 +86,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             }
 
             robot.drivetrain.setDefaultCommand(
-                    new TeleopDriveCommand(
-                            robot.drivetrain, () -> -gamepad1.left_stick_y,
+                    new TeleopDriveCommand(robot.drivetrain, () -> -gamepad1.left_stick_y,
                     () -> -gamepad1.left_stick_x, () -> gamepad1.right_stick_x,
-                    () -> gamepad1.left_stick_button
-                    )
+                    () -> gamepad1.left_stick_button)
             );
 
             telemetry.update();

@@ -26,7 +26,7 @@ public class TeleopDriveCommand extends CommandBase {
         this.fun = fun;
         this.shouldReset = shouldReset;
 
-        addRequirements((Subsystem) drivetrain);
+        addRequirements(drivetrain);
     }
 
     @Override

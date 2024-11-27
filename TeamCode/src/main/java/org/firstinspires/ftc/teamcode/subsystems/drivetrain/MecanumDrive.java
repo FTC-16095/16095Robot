@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver;
 
 public class MecanumDrive extends SubsystemBase {
-    private final DcMotor leftFrontMotor, leftBackMotor, rightFrontMotor, rightBackMotor;
+    private DcMotor leftFrontMotor, leftBackMotor, rightFrontMotor, rightBackMotor;
     private final GoBildaPinpointDriver od;
     private double yawOffset;
 
@@ -18,11 +18,6 @@ public class MecanumDrive extends SubsystemBase {
         rightFrontMotor = hardwareMap.get(DcMotor.class, "rightFrontMotor");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
         od = hardwareMap.get(GoBildaPinpointDriver.class, "od");
-
-        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBackMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         od.resetPosAndIMU();
         od.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
