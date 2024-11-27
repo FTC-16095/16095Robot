@@ -24,8 +24,8 @@ public class Claw {
         RELEASING
     }
 
-    private State clawState = State.IDLE;
-    private State stretchState = State.IDLE;
+    public static State clawState = State.IDLE;
+    public static State stretchState = State.IDLE;
 
     private Robot robot;
     private Sensors sensors;
@@ -65,6 +65,18 @@ public class Claw {
 
     }
 
+    public void clawUpdate() {
+        switch (clawState) {
+
+        }
+    }
+
+    public void stretchUpdate() {
+        switch (stretchState) {
+
+        }
+    }
+
     public void setStretchDirection(boolean isForward) {
         slideMotor.setInverted(!isForward);
     }
@@ -91,6 +103,17 @@ public class Claw {
 
         slideMotor.setTargetPosition(positionTicks);
         slideMotor.setPositionTolerance(13.6);   // allowed maximum error
+
+        while (!slideMotor.atTargetPosition()) {
+            slideMotor.set(0.75);
+        }
+        slideMotor.stopMotor();
+    }
+
+    public void clawRepositioning() {
+
+        slideMotor.setTargetPosition(0);
+        slideMotor.setPositionTolerance(13.6);
 
         while (!slideMotor.atTargetPosition()) {
             slideMotor.set(0.75);

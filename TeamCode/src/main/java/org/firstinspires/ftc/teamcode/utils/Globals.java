@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.utils16095;
+package org.firstinspires.ftc.teamcode.utils;
 
 public class Globals {
     public static RunMode RUNMODE = RunMode.TEST;

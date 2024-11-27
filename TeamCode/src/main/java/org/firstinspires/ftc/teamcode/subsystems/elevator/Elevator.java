@@ -13,12 +13,11 @@ public class Elevator {
     public enum State {
         IDLE,
         TOP,
-        BOTTOM,
-        ELEVATING,
-        REPOSITIONING
+        ELEVATE,
+        REPOSITION
     }
 
-    private State currentState = State.IDLE;
+    public static State elevatorState = State.IDLE;
 
     private Robot robot;
     private Sensors sensors;
@@ -61,6 +60,8 @@ public class Elevator {
         encoder.setDirection(Motor.Direction.FORWARD);
         motors.set(0);
 
+        elevatorState = State.IDLE;
+
     }
 
     public void setElevatorPositionCoefficient(double kP) {
@@ -69,6 +70,15 @@ public class Elevator {
 
     public int getPos() {
         return motors.getCurrentPosition();
+    }
+
+    public void update() {
+        switch (elevatorState) {
+            case ELEVATE:
+                toTargetPosition(20,2000);
+            case REPOSITION:
+                toTargetPosition(0,2000);
+        }
     }
 
     public double getVelocity() {
@@ -85,7 +95,8 @@ public class Elevator {
             motors.set(DEFAULT_POWER);
         }
 
-        //motors.stopMotor();
+        motors.stopMotor();
+        elevatorState = State.TOP;
     }
 
 }
